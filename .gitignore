@@ -1,0 +1,3 @@
+# Local research extracts and citation ledger; never publish these fetched copies.
+sources/
+.DS_Store

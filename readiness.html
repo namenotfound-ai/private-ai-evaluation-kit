@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A seven-question AI ownership readiness assessment for teams deciding between hosted, private, and owned AI infrastructure.">
+  <meta name="theme-color" content="#0a0a0b">
+  <link rel="canonical" href="https://namenotfound-ai.github.io/private-ai-evaluation-kit/readiness.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AI Ownership Readiness Assessment — Name Not Found">
+  <meta property="og:description" content="Answer seven practical questions about data, IP, evidence, actions, and exit paths. Get a transparent next-step heuristic.">
+  <meta property="og:url" content="https://namenotfound-ai.github.io/private-ai-evaluation-kit/readiness.html">
+  <meta property="og:site_name" content="Name Not Found">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="AI Ownership Readiness Assessment — Name Not Found">
+  <meta name="twitter:description" content="A local-only seven-question assessment for hosted, private, or owned AI deployment.">
+  <title>AI Ownership Readiness Assessment — Name Not Found</title>
+  <style>
+    :root { --bg:#0a0a0b; --panel:#111113; --panel-2:#171719; --ink:#f4f2ec; --muted:#aaa8a1; --line:#2b2b2f; --gold:#e8c46a; --gold-soft:#f4df9d; --green:#9dd4b1; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--bg); color:var(--ink); font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; line-height:1.6; }
+    a { color:var(--gold-soft); } a:hover { color:var(--gold); }
+    .shell { width:min(900px,calc(100% - 36px)); margin:0 auto; }
+    header { border-bottom:1px solid var(--line); }
+    nav { min-height:72px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+    .wordmark { color:var(--ink); text-decoration:none; font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    .back { color:var(--muted); text-decoration:none; font-size:13px; }
+    main { padding:72px 0 110px; }
+    .kicker { color:var(--gold); font-size:11px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; margin-bottom:18px; }
+    h1 { margin:0 0 20px; max-width:760px; font-size:clamp(38px,6vw,70px); line-height:1; letter-spacing:-.055em; }
+    .lede { max-width:700px; margin:0 0 45px; color:var(--muted); font-size:19px; line-height:1.5; }
+    .notice { border-left:2px solid var(--gold); padding:2px 0 2px 18px; color:var(--gold-soft); font-size:13px; margin-bottom:36px; }
+    .progress-wrap { display:flex; align-items:center; gap:14px; margin-bottom:24px; color:var(--muted); font-size:13px; }
+    .progress { height:5px; flex:1; background:var(--line); border-radius:99px; overflow:hidden; }
+    .progress i { display:block; width:0; height:100%; background:var(--gold); transition:width .2s ease; }
+    .question { border:1px solid var(--line); background:var(--panel); padding:24px; margin-bottom:14px; }
+    .question h2 { margin:0 0 16px; font-size:20px; letter-spacing:-.02em; line-height:1.25; }
+    .question p { color:var(--muted); margin:0 0 14px; font-size:13px; }
+    .options { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; }
+    .option { min-height:58px; padding:10px 12px; border:1px solid var(--line); border-radius:7px; background:var(--bg); color:var(--muted); font:inherit; font-size:13px; text-align:left; cursor:pointer; }
+    .option:hover, .option:focus-visible { border-color:var(--gold); color:var(--ink); outline:none; }
+    .option.selected { border-color:var(--gold); background:#211d11; color:var(--gold-soft); box-shadow:inset 0 0 0 1px var(--gold); }
+    .option b { display:block; color:var(--ink); font-size:14px; margin-bottom:2px; }
+    .option.selected b { color:var(--gold-soft); }
+    #finish { width:100%; min-height:48px; margin-top:13px; border:1px solid var(--gold); border-radius:7px; background:var(--gold); color:#12110c; font:inherit; font-weight:700; cursor:pointer; }
+    #finish:disabled { opacity:.45; cursor:not-allowed; }
+    #finish:not(:disabled):hover { filter:brightness(1.08); }
+    .result { display:none; margin-top:35px; border:1px solid #314336; background:#0f1511; padding:30px; }
+    .result.visible { display:block; }
+    .result .eyebrow { color:var(--green); font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; }
+    .result h2 { margin:10px 0 12px; font-size:clamp(28px,4vw,43px); line-height:1.05; letter-spacing:-.04em; }
+    .result p { color:var(--muted); max-width:650px; }
+    .scoreline { color:var(--green); font:13px ui-monospace,SFMono-Regular,Menlo,monospace; margin:18px 0; }
+    .next { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:#314336; border:1px solid #314336; margin:24px 0; }
+    .next a { background:#111813; padding:17px; text-decoration:none; font-size:13px; }
+    .next a b { display:block; color:var(--ink); margin-bottom:4px; }
+    .next a span { color:var(--muted); }
+    .email { display:inline-flex; align-items:center; min-height:46px; padding:0 17px; border-radius:7px; background:var(--gold); color:#12110c; font-size:14px; font-weight:700; text-decoration:none; }
+    .email:hover { color:#12110c; filter:brightness(1.08); }
+    .fine { color:var(--muted); font-size:12px; margin-top:15px; }
+    footer { border-top:1px solid var(--line); padding:24px 0 42px; color:var(--muted); font-size:12px; display:flex; justify-content:space-between; gap:20px; }
+    @media (max-width:680px) { .options, .next { grid-template-columns:1fr; } .option { min-height:49px; } footer { display:block; } footer span { display:block; margin-bottom:8px; } }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .progress i { transition:none; } }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Quiz",
+    "name":"AI Ownership Readiness Assessment",
+    "description":"A seven-question local-only assessment for hosted, private, or owned AI deployment.",
+    "url":"https://namenotfound-ai.github.io/private-ai-evaluation-kit/readiness.html",
+    "provider":{"@type":"Organization","name":"Name Not Found","url":"https://namenotfound.ai"}
+  }
+  </script>
+</head>
+<body>
+  <header><div class="shell"><nav aria-label="Primary navigation"><a class="wordmark" href="https://namenotfound.ai">Name Not Found</a><a class="back" href="index.html">← Evaluation kit</a></nav></div></header>
+  <main class="shell">
+    <div class="kicker">Private AI · Ownership assessment</div>
+    <h1>Should you rent the capability—or own the system?</h1>
+    <p class="lede">Answer seven practical questions about the workload you actually care about. You’ll get a transparent next-step heuristic—not a sales score, benchmark, or procurement decision.</p>
+    <div class="notice"><strong>Local only:</strong> your answers stay in this browser. Nothing is submitted. You choose whether to open an email after seeing your result.</div>
+    <div class="progress-wrap"><span id="progress-label">0 of 7 answered</span><div class="progress" aria-hidden="true"><i id="progress-bar"></i></div></div>
+    <form id="assessment">
+      <section class="question">
+        <h2>1. Would sending the workload to a shared provider create a real data-boundary problem?</h2>
+        <p>Think about the actual data, not a hypothetical future.</p>
+        <div class="options" data-question="data"><button type="button" class="option" data-points="0"><b>No</b>A hosted service is acceptable.</button><button type="button" class="option" data-points="1"><b>Maybe</b>It depends on controls and contract terms.</button><button type="button" class="option" data-points="2"><b>Yes</b>The data must stay under our control.</button></div>
+      </section>
+      <section class="question">
+        <h2>2. Would model behavior, adaptations, or workflow logic become part of your IP?</h2>
+        <p>Include specialized memory, routing, prompts, tools, and evaluation assets.</p>
+        <div class="options" data-question="ip"><button type="button" class="option" data-points="0"><b>Not really</b>The capability is replaceable.</button><button type="button" class="option" data-points="1"><b>Somewhat</b>It would be useful to preserve.</button><button type="button" class="option" data-points="2"><b>Definitely</b>It becomes core capability.</button></div>
+      </section>
+      <section class="question">
+        <h2>3. Does the work need continuity across long documents, sessions, or time?</h2>
+        <p>Separate a large prompt from useful, inspectable continuity.</p>
+        <div class="options" data-question="context"><button type="button" class="option" data-points="0"><b>One request</b>Short, isolated tasks are enough.</button><button type="button" class="option" data-points="1"><b>One project</b>State should persist during a workflow.</button><button type="button" class="option" data-points="2"><b>Ongoing</b>Memory and long context are central.</button></div>
+      </section>
+      <section class="question">
+        <h2>4. Must the system take actions through tools or operational systems?</h2>
+        <p>Examples: retrieve records, write files, call services, or change state.</p>
+        <div class="options" data-question="actions"><button type="button" class="option" data-points="0"><b>No</b>Answers are the end state.</button><button type="button" class="option" data-points="1"><b>Assisted</b>People approve every action.</button><button type="button" class="option" data-points="2"><b>Operational</b>Verified actions are part of the product.</button></div>
+      </section>
+      <section class="question">
+        <h2>5. Do you need an evidence trail and reproducible results?</h2>
+        <p>Consider citations, versions, tool calls, approvals, replay, and audit.</p>
+        <div class="options" data-question="evidence"><button type="button" class="option" data-points="0"><b>Lightweight</b>Human review is sufficient.</button><button type="button" class="option" data-points="1"><b>Important</b>We need traceability for key cases.</button><button type="button" class="option" data-points="2"><b>Required</b>Evidence and replay are non-negotiable.</button></div>
+      </section>
+      <section class="question">
+        <h2>6. Would volume or repeated context make hosted economics difficult?</h2>
+        <p>Use the TCO worksheet for actual numbers; this question is only a directional signal.</p>
+        <div class="options" data-question="economics"><button type="button" class="option" data-points="0"><b>Low volume</b>Speed matters more than unit economics.</button><button type="button" class="option" data-points="1"><b>Growing</b>We need to model the tradeoff.</button><button type="button" class="option" data-points="2"><b>High volume</b>Compute and context costs are strategic.</button></div>
+      </section>
+      <section class="question">
+        <h2>7. Would a vendor change or outage create unacceptable continuity risk?</h2>
+        <p>Think about export, version pinning, fallback models, and exit paths.</p>
+        <div class="options" data-question="exit"><button type="button" class="option" data-points="0"><b>Manageable</b>A fallback service is enough.</button><button type="button" class="option" data-points="1"><b>Material</b>We need a documented exit path.</button><button type="button" class="option" data-points="2"><b>Critical</b>Continuity requires ownership and control.</button></div>
+      </section>
+      <button id="finish" type="submit" disabled>Answer every question to see your result</button>
+    </form>
+    <section class="result" id="result" aria-live="polite" aria-labelledby="result-title">
+      <div class="eyebrow">Your directional result</div>
+      <h2 id="result-title"></h2>
+      <div class="scoreline" id="scoreline"></div>
+      <p id="result-copy"></p>
+      <div class="next">
+        <a href="long-context-ai.html"><b>Long-context guide ↗</b><span>Measure retrieval, memory, evidence, and recovery.</span></a>
+        <a href="tco.html"><b>TCO worksheet ↗</b><span>Compare your own hosted and private numbers.</span></a>
+        <a href="https://huggingface.co/namenotfoundai"><b>Public releases ↗</b><span>Explore the Name Not Found model family.</span></a>
+      </div>
+      <a class="email" id="email-cta" href="mailto:ai@namenotfound.ai?subject=AI%20ownership%20assessment">Discuss a real workload with ai@namenotfound.ai ↗</a>
+      <p class="fine">This heuristic is editorial guidance, not a benchmark or procurement recommendation. Nothing has been sent; the button only opens your email client with the result included.</p>
+    </section>
+  </main>
+  <footer class="shell"><span>Local-only assessment · no tracking or remote form</span><span><a href="https://namenotfound.ai">namenotfound.ai</a> · <a href="https://github.com/namenotfound-ai/private-ai-evaluation-kit">Source ↗</a></span></footer>
+  <script>
+    const answers = {};
+    const groups = [...document.querySelectorAll('.options')];
+    const finish = document.getElementById('finish');
+    const progressLabel = document.getElementById('progress-label');
+    const progressBar = document.getElementById('progress-bar');
+    groups.forEach(group => {
+      group.querySelectorAll('.option').forEach(option => {
+        option.addEventListener('click', () => {
+          group.querySelectorAll('.option').forEach(item => item.classList.remove('selected'));
+          option.classList.add('selected');
+          answers[group.dataset.question] = Number(option.dataset.points);
+          const count = Object.keys(answers).length;
+          progressLabel.textContent = count + ' of ' + groups.length + ' answered';
+          progressBar.style.width = (count / groups.length * 100) + '%';
+          finish.disabled = count !== groups.length;
+          finish.textContent = count === groups.length ? 'See my directional result' : 'Answer every question to see your result';
+        });
+      });
+    });
+    document.getElementById('assessment').addEventListener('submit', event => {
+      event.preventDefault();
+      const score = Object.values(answers).reduce((sum, value) => sum + value, 0);
+      let title, copy;
+      if (score <= 4) {
+        title = 'Validate hosted first';
+        copy = 'Your answers point to a workload where hosted access may be the fastest validation path. Still pin the acceptance criteria, data terms, cost per successful task, and an exportable exit path before the workload becomes critical.';
+      } else if (score <= 9) {
+        title = 'Run a private / hybrid evaluation';
+        copy = 'Your workload has meaningful control, continuity, or economics requirements. Compare hosted and private deployment on the same representative data, with evidence, operator time, failure recovery, and total cost included.';
+      } else {
+        title = 'Make ownership a first-class requirement';
+        copy = 'Your answers indicate that data boundaries, IP, continuity, evidence, or operational control are central to the workload. Evaluate the complete system—model, runtime, memory, tools, deployment, and exit path—not just an endpoint.';
+      }
+      document.getElementById('result-title').textContent = title;
+      document.getElementById('scoreline').textContent = 'CONTROL SIGNAL: ' + score + ' / ' + (groups.length * 2);
+      document.getElementById('result-copy').textContent = copy;
+      const body = 'I completed the Name Not Found AI Ownership Readiness Assessment.\n\nDirectional result: ' + title + '\nControl signal: ' + score + ' / ' + (groups.length * 2) + '\n\nI would like to discuss a real workload.';
+      document.getElementById('email-cta').href = 'mailto:ai@namenotfound.ai?subject=' + encodeURIComponent('AI ownership assessment: ' + title) + '&body=' + encodeURIComponent(body);
+      document.getElementById('result').classList.add('visible');
+      document.getElementById('result').scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  </script>
+</body>
+</html>
