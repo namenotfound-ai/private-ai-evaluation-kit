@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Hosted access or private deployment
+    url: https://namenotfound-ai.github.io/private-ai-evaluation-kit/#decision
+    about: Keep confidential details out of public issues; use the page's direct email link for a private conversation.
+  - name: Read the private AI evaluation guide
+    url: https://namenotfound-ai.github.io/private-ai-evaluation-kit/
+    about: Start with the vendor-neutral checklist before sharing a workload.

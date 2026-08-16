@@ -1,0 +1,64 @@
+name: Workload evaluation
+description: Share a non-confidential AI workload you want to evaluate.
+title: "[Evaluation] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your interest. **Do not include confidential, personal, regulated, proprietary, or production data in a public issue.**
+
+        For a private conversation, use the direct contact link on the [evaluation page](https://namenotfound-ai.github.io/private-ai-evaluation-kit/#decision) or email `ai@namenotfound.ai`.
+
+  - type: input
+    id: role
+    attributes:
+      label: Your role and organization type
+      description: For example, security lead at a healthcare company or ML engineer at a research lab. Do not name a confidential customer.
+      placeholder: Security lead at a healthcare company
+    validations:
+      required: true
+
+  - type: textarea
+    id: workload
+    attributes:
+      label: What workload are you evaluating?
+      description: Describe the task at a high level without including private documents, identifiers, or sensitive details.
+      placeholder: We need to search and reason over a changing corpus of internal technical documents, with citations and human approval before actions.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: deployment
+    attributes:
+      label: Preferred deployment direction
+      options:
+        - Hosted access
+        - Private or on-prem deployment
+        - Self-hosted / owned infrastructure
+        - Not sure yet
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: What would make the evaluation successful?
+      description: Include measurable outcomes such as retrieval quality, evidence completeness, latency, cost, or operator time.
+      placeholder: 90% evidence recall on the holdout set, complete citations, and less than 30 seconds p95 latency.
+    validations:
+      required: true
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Important constraints
+      description: Share categories only—such as region, hardware, compliance boundary, or approximate volume. Do not post secrets or customer data.
+      placeholder: Data must remain in our VPC; batch workload; existing NVIDIA hardware.
+
+  - type: checkboxes
+    id: safe
+    attributes:
+      label: Public issue safety
+      options:
+        - label: I confirm that this issue contains no confidential, personal, regulated, proprietary, or production data.
+          required: true
