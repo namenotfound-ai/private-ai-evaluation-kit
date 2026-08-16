@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A private AI total-cost worksheet. Compare hosted and private deployment economics using your own workload numbers.">
+  <meta name="theme-color" content="#0a0a0b">
+  <link rel="canonical" href="https://namenotfound-ai.github.io/private-ai-evaluation-kit/tco.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Private AI TCO Worksheet — Name Not Found">
+  <meta property="og:description" content="Compare hosted and private AI economics using your own workload, hardware, operations, and success-rate inputs.">
+  <meta property="og:url" content="https://namenotfound-ai.github.io/private-ai-evaluation-kit/tco.html">
+  <meta property="og:site_name" content="Name Not Found">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Private AI TCO Worksheet — Name Not Found">
+  <meta name="twitter:description" content="A transparent, local-only worksheet for comparing hosted and private AI costs.">
+  <title>Private AI TCO Worksheet — Name Not Found</title>
+  <style>
+    :root { --bg:#0a0a0b; --panel:#111113; --ink:#f4f2ec; --muted:#aaa8a1; --line:#2b2b2f; --gold:#e8c46a; --gold-soft:#f4df9d; --green:#9dd4b1; --red:#ef9b9b; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; line-height:1.6; }
+    a { color:var(--gold-soft); } a:hover { color:var(--gold); }
+    .shell { width:min(1040px,calc(100% - 36px)); margin:0 auto; }
+    header { border-bottom:1px solid var(--line); }
+    nav { min-height:72px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+    .wordmark { color:var(--ink); text-decoration:none; font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    .back { color:var(--muted); text-decoration:none; font-size:13px; }
+    main { padding:70px 0 100px; }
+    .kicker { color:var(--gold); font-size:11px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; margin-bottom:18px; }
+    h1 { margin:0 0 20px; max-width:760px; font-size:clamp(38px,6vw,70px); line-height:1; letter-spacing:-.055em; }
+    .lede { max-width:700px; margin:0 0 52px; color:var(--muted); font-size:19px; line-height:1.5; }
+    .layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(300px,.7fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+    .form, .results { background:var(--panel); padding:28px; }
+    .results { background:#0f1511; }
+    h2 { margin:0 0 22px; font-size:22px; letter-spacing:-.02em; }
+    h3 { margin:26px 0 12px; color:var(--gold-soft); font-size:13px; letter-spacing:.14em; text-transform:uppercase; }
+    .field-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    label { display:block; color:var(--muted); font-size:13px; }
+    input { width:100%; margin-top:6px; padding:11px 12px; border:1px solid var(--line); border-radius:7px; background:var(--bg); color:var(--ink); font:inherit; font-size:15px; }
+    input:focus { outline:2px solid var(--gold); outline-offset:1px; border-color:transparent; }
+    .unit { position:relative; } .unit span { position:absolute; right:12px; bottom:11px; color:var(--muted); font-size:13px; pointer-events:none; }
+    .hint { color:var(--muted); font-size:12px; margin:6px 0 0; }
+    button { width:100%; min-height:46px; margin-top:26px; border:1px solid var(--gold); border-radius:7px; background:var(--gold); color:#12110c; font:inherit; font-size:14px; font-weight:700; cursor:pointer; }
+    button:hover { filter:brightness(1.08); }
+    .result-lede { color:var(--muted); font-size:14px; margin:0 0 22px; }
+    .metric { border-top:1px solid #314336; padding:17px 0; display:flex; justify-content:space-between; gap:16px; align-items:baseline; }
+    .metric:first-of-type { border-top:0; padding-top:0; }
+    .metric span { color:var(--muted); font-size:13px; }
+    .metric strong { color:var(--green); font-size:22px; letter-spacing:-.03em; text-align:right; }
+    .metric strong.neutral { color:var(--ink); }
+    .metric strong.warn { color:var(--red); }
+    .note { margin:25px 0 0; padding-top:18px; border-top:1px solid #314336; color:var(--muted); font-size:12px; }
+    .cta { margin-top:45px; padding:28px; border:1px solid var(--line); background:var(--panel); display:flex; align-items:center; justify-content:space-between; gap:30px; }
+    .cta h2 { margin:0 0 6px; } .cta p { color:var(--muted); margin:0; font-size:14px; }
+    .cta a { flex:0 0 auto; display:inline-flex; align-items:center; min-height:44px; padding:0 16px; border-radius:7px; background:var(--gold); color:#12110c; font-size:14px; font-weight:700; text-decoration:none; }
+    footer { border-top:1px solid var(--line); padding:24px 0 42px; color:var(--muted); font-size:12px; display:flex; justify-content:space-between; gap:20px; }
+    @media (max-width:760px) { .layout { grid-template-columns:1fr; } .field-grid { grid-template-columns:1fr; } .cta { display:block; } .cta a { margin-top:20px; } footer { display:block; } footer span { display:block; margin-bottom:8px; } }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"Private AI TCO Worksheet",
+    "applicationCategory":"BusinessApplication",
+    "description":"A local-only worksheet for comparing hosted and private AI deployment costs.",
+    "url":"https://namenotfound-ai.github.io/private-ai-evaluation-kit/tco.html",
+    "provider":{"@type":"Organization","name":"Name Not Found","url":"https://namenotfound.ai"}
+  }
+  </script>
+</head>
+<body>
+  <header><div class="shell"><nav aria-label="Primary navigation"><a class="wordmark" href="https://namenotfound.ai">Name Not Found</a><a class="back" href="index.html">← Evaluation kit</a></nav></div></header>
+  <main class="shell">
+    <div class="kicker">Private AI · Cost worksheet</div>
+    <h1>What does a successful task actually cost?</h1>
+    <p class="lede">Enter your own workload numbers to compare a hosted baseline with a private deployment. This worksheet runs in your browser only; it does not estimate vendor prices, transmit data, or save a lead.</p>
+    <div class="layout">
+      <form class="form" id="tco-form">
+        <h2>Your workload</h2>
+        <div class="field-grid">
+          <label>Tasks per month<input id="tasks" type="number" min="0" step="1" placeholder="1000" inputmode="numeric"><p class="hint">Completed or reviewed tasks, not raw requests.</p></label>
+          <label>Hosted success rate<input id="hosted-rate" type="number" min="0" max="100" step="0.1" placeholder="90" inputmode="decimal"><p class="hint">Percentage of tasks that reach your acceptance bar.</p></label>
+        </div>
+        <h3>Hosted baseline</h3>
+        <label>Monthly hosted bill<div class="unit"><input id="hosted-monthly" type="number" min="0" step="0.01" placeholder="0" inputmode="decimal"><span>$ / mo</span></div><p class="hint">Include subscription, usage, storage, and overages.</p></label>
+        <h3>Private deployment</h3>
+        <div class="field-grid">
+          <label>Hardware / setup cost<div class="unit"><input id="private-capex" type="number" min="0" step="0.01" placeholder="0" inputmode="decimal"><span>$</span></div></label>
+          <label>Amortization period<input id="amort-months" type="number" min="1" step="1" placeholder="36" inputmode="numeric"><p class="hint">Months over which to spread setup cost.</p></label>
+          <label>Electricity + hosting<div class="unit"><input id="private-power" type="number" min="0" step="0.01" placeholder="0" inputmode="decimal"><span>$ / mo</span></div></label>
+          <label>Operations + support<div class="unit"><input id="private-ops" type="number" min="0" step="0.01" placeholder="0" inputmode="decimal"><span>$ / mo</span></div></label>
+          <label>Private success rate<input id="private-rate" type="number" min="0" max="100" step="0.1" placeholder="90" inputmode="decimal"><p class="hint">Use the same acceptance bar as hosted.</p></label>
+          <label>Migration cost<div class="unit"><input id="migration" type="number" min="0" step="0.01" placeholder="0" inputmode="decimal"><span>$ one-time</span></div></label>
+        </div>
+        <button type="submit">Calculate from my inputs</button>
+      </form>
+      <section class="results" aria-live="polite" aria-labelledby="results-title">
+        <h2 id="results-title">Your comparison</h2>
+        <p class="result-lede" id="result-lede">Enter a few numbers to see cost per successful task. Blank fields are treated as zero only after you calculate.</p>
+        <div class="metric"><span>Hosted cost / successful task</span><strong id="hosted-result" class="neutral">—</strong></div>
+        <div class="metric"><span>Private monthly equivalent</span><strong id="private-monthly-result" class="neutral">—</strong></div>
+        <div class="metric"><span>Private cost / successful task</span><strong id="private-result" class="neutral">—</strong></div>
+        <div class="metric"><span>Monthly difference</span><strong id="difference-result" class="neutral">—</strong></div>
+        <div class="metric"><span>Simple break-even</span><strong id="breakeven-result" class="neutral">—</strong></div>
+        <p class="note">This is a worksheet, not a quote or recommendation. Add operator time, incident cost, storage, networking, support, and taxes when they matter. Compare the same workload and acceptance criteria on both sides.</p>
+      </section>
+    </div>
+    <div class="cta"><div><h2>Have a real workload?</h2><p>Bring the numbers, constraints, and acceptance criteria to Name Not Found for a hosted or private-deployment conversation.</p></div><a href="mailto:ai@namenotfound.ai?subject=Private%20AI%20TCO%20evaluation">Email ai@namenotfound.ai ↗</a></div>
+  </main>
+  <footer class="shell"><span>Local-only worksheet · no tracking or remote form</span><span><a href="https://namenotfound.ai">namenotfound.ai</a> · <a href="https://huggingface.co/namenotfoundai">Public releases ↗</a></span></footer>
+  <script>
+    const value = id => Number(document.getElementById(id).value || 0);
+    const money = n => Number.isFinite(n) ? new Intl.NumberFormat(undefined, {style:'currency', currency:'USD', maximumFractionDigits:2}).format(n) : '—';
+    const percent = id => Math.max(0, Math.min(100, value(id))) / 100;
+    document.getElementById('tco-form').addEventListener('submit', event => {
+      event.preventDefault();
+      const tasks = value('tasks');
+      const hostedMonthly = value('hosted-monthly');
+      const hostedSuccessful = tasks * percent('hosted-rate');
+      const privateCapex = value('private-capex');
+      const amortMonths = Math.max(1, value('amort-months'));
+      const privateRecurring = value('private-power') + value('private-ops');
+      const migration = value('migration');
+      const privateMonthly = privateCapex / amortMonths + privateRecurring + migration / amortMonths;
+      const privateSuccessful = tasks * percent('private-rate');
+      const hostedPerTask = hostedSuccessful > 0 ? hostedMonthly / hostedSuccessful : NaN;
+      const privatePerTask = privateSuccessful > 0 ? privateMonthly / privateSuccessful : NaN;
+      const difference = hostedMonthly - privateMonthly;
+      const oneTime = privateCapex + migration;
+      const breakeven = difference > 0 && oneTime > 0 ? oneTime / difference : NaN;
+      document.getElementById('hosted-result').textContent = money(hostedPerTask);
+      document.getElementById('private-monthly-result').textContent = money(privateMonthly);
+      document.getElementById('private-result').textContent = money(privatePerTask);
+      document.getElementById('difference-result').textContent = money(difference);
+      document.getElementById('breakeven-result').textContent = Number.isFinite(breakeven) ? breakeven.toFixed(1) + ' months' : 'Not reached';
+      document.getElementById('result-lede').textContent = tasks > 0 ? 'Based on ' + tasks.toLocaleString() + ' tasks per month and the success rates you entered.' : 'Add a task volume and success rates for a meaningful per-task comparison.';
+      document.getElementById('difference-result').className = difference >= 0 ? '' : 'warn';
+      document.getElementById('breakeven-result').className = Number.isFinite(breakeven) ? 'neutral' : 'warn';
+    });
+  </script>
+</body>
+</html>
